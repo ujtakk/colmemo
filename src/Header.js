@@ -18,34 +18,36 @@ const styles = theme => ({
   }
 });
 
-function Header(props) {
-  const { classes, target, dispatch } = props;
+class Header extends React.Component {
+  render() {
+    const { classes, target, dispatch } = this.props;
 
-  return (
-    <AppBar position="fixed" className={classes.header}>
-      <Toolbar>
-        <IconButton
-          color="inherit"
-          aria-label="Menu"
-          onClick={() => {dispatch({type: TOGGLE_SIDEBAR})}}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
-          colmemo
-        </Typography>
-        <Typography style={{ flexGrow: 1, align: 'center' }}>
-          {target}
-        </Typography>
-        <Button
-          color="inherit"
-          onClick={() => {dispatch({type: RESET_STORE})}}
-        >
-          Reset
-        </Button>
-      </Toolbar>
-    </AppBar>
-  );
+    return (
+      <AppBar position="fixed" className={classes.header}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="Menu"
+            onClick={() => {dispatch({type: TOGGLE_SIDEBAR})}}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
+            colmemo
+          </Typography>
+          <Typography style={{ flexGrow: 1, align: 'center' }}>
+            {target}
+          </Typography>
+          <Button
+            color="inherit"
+            onClick={() => {dispatch({type: RESET_STORE})}}
+          >
+            Reset
+          </Button>
+        </Toolbar>
+      </AppBar>
+    );
+  }
 }
 
 export default withStyles(styles)(Header);

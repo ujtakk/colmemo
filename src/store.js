@@ -17,18 +17,14 @@ const initialState = {
 
 function rootReducer(state=initialState, action) {
   switch (action.type) {
-    case type.SIGN_IN:
-      return Object.assign({}, state, {
-        signedIn: true,
-      });
-    case type.SIGN_OUT:
-      return Object.assign({}, state, {
-        signedIn: false,
-      });
-    case type.ADD_ITEM:
-      return Object.assign({}, state, {
-        items: [...state.items, {title: action.value}]
-      });
+    // case type.SIGN_IN:
+    //   return Object.assign({}, state, {
+    //     signedIn: true,
+    //   });
+    // case type.SIGN_OUT:
+    //   return Object.assign({}, state, {
+    //     signedIn: false,
+    //   });
     case type.ADD_ATTR:
       if (action.attr_type === '') {
         return state;
@@ -36,6 +32,14 @@ function rootReducer(state=initialState, action) {
       return Object.assign({}, state, {
         attrs: [...state.attrs, action.value]
       });
+    case type.ADD_ITEM:
+      return Object.assign({}, state, {
+        items: [...state.items, {title: action.value}]
+      });
+    case type.EDIT_ITEM:
+      const newItems = state.items;
+      newItems[action.index][action.attr] = action.value;
+      return Object.assign({}, state, {items: newItems});
     case type.FOCUS_ITEM:
       return Object.assign({}, state, {
         focusedItem: action.value,
@@ -57,6 +61,12 @@ function rootReducer(state=initialState, action) {
         return Object.assign({}, state, action.value);
       }
       return initialState;
+    // case type.SWITCH_TABLE:
+    //   return state;
+    // case type.CREATE_TABLE:
+    //   return state;
+    // case type.DELETE_TABLE:
+    //   return state;
     default:
       return state;
   }

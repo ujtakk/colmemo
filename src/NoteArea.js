@@ -33,34 +33,36 @@ const styles = theme => ({
   }
 });
 
-function NoteArea(props) {
-  const { classes, dispatch, text } = props;
+class NoteArea extends React.Component {
+  render() {
+    const { classes, dispatch, text } = this.props;
 
-  const handleChange = event => {
-    dispatch({type: UPDATE_NOTE, value: event.target.value});
-  };
+    const handleChange = event => {
+      dispatch({type: UPDATE_NOTE, value: event.target.value});
+    };
 
-  return (
-    <Drawer
-      className={classes.drawer}
-      variant="permanent"
-      classes={{
-        paper: classes.drawerPaper
-      }}
-      anchor="right"
-      position="absolute"
-    >
-      <div className={classes.toolbar} />
-      <Paper className={classes.content}>
-        <TextField
-          fullWidth={true}
-          multiline={true}
-          value={text}
-          onChange={handleChange}
-        />
-      </Paper>
-    </Drawer>
-  );
+    return (
+      <Drawer
+        className={classes.drawer}
+        variant="permanent"
+        classes={{
+          paper: classes.drawerPaper
+        }}
+        anchor="right"
+        position="absolute"
+      >
+        <div className={classes.toolbar} />
+        <Paper className={classes.content}>
+          <TextField
+            fullWidth={true}
+            multiline={true}
+            value={text}
+            onChange={handleChange}
+          />
+        </Paper>
+      </Drawer>
+    );
+  }
 }
 
 export default withStyles(styles)(NoteArea);

@@ -3,12 +3,13 @@ import classNames from 'classnames';
 
 import { AutoSizer, Table, Column, SortDirection } from 'react-virtualized';
 
+import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { withStyles } from '@material-ui/core/styles';
 
-import { FOCUS_ITEM } from './actions';
+import { EDIT_ITEM, FOCUS_ITEM } from './actions';
 
 const itemTableWidth = '75%';
 
@@ -49,7 +50,9 @@ class ItemTable extends React.PureComponent {
   state = {
     sortBy: undefined,
     sortDirection: undefined,
-    focusedAttr: 'title',
+    focusedAttr: null,
+    focusedIndex: null,
+    editing: false,
   };
 
   direction = {
@@ -136,10 +139,34 @@ class ItemTable extends React.PureComponent {
         </TableSortLabel>
       </TableCell>
     );
-  }
+  };
 
-  cellRenderer = ({ columnIndex, cellData }) => {
-    const { classes, cols, onRowClick, rowHeight } = this.props;
+  cellRenderer = ({ cellData, columnIndex, rowIndex }) => {
+    const { classes, cols, onRowClick, rowHeight, dispatch } = this.props;
+
+    var data = undefined;
+    if (this.state.editing &&
+       (this.state.focusedAttr === cols[columnIndex].key) &&
+       (this.state.focusedIndex === rowIndex)) {
+      data = (
+        <TextField
+          autoFocus
+          defaultValue={cellData}
+          onBlur={(event) => {
+            dispatch({
+              type: EDIT_ITEM,
+              index: this.state.focusedIndex,
+              attr: this.state.focusedAttr,
+              value: event.target.value
+            });
+            this.setState({editing: false, focusedAttr: null, focusedIndex: null})
+          }}
+        />
+      );
+    }
+    else {
+      data = this.stringify(cellData, cols[columnIndex].type);
+    }
 
     return (
       <TableCell
@@ -151,7 +178,7 @@ class ItemTable extends React.PureComponent {
         style={{ height: rowHeight }}
         align={this.alignment(cols[columnIndex].type)}
       >
-        {this.stringify(cellData, cols[columnIndex].type)}
+        {data}
       </TableCell>
     );
   };
@@ -185,8 +212,7 @@ class ItemTable extends React.PureComponent {
           dispatch({type: FOCUS_ITEM, value: event.rowData.title})
         }
         onRowDoubleClick={({ event, index, rowData }) => {
-          // TODO: make columns editable
-          console.log(this.state.focusedAttr, rowData, index, event);
+          this.setState({focusedIndex: index, editing: true});
         }}
         onColumnClick={({ columnData, dataKey, event }) => {
           this.setState({focusedAttr: dataKey});
