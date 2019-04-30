@@ -1,4 +1,5 @@
 import React from 'react';
+
 import classNames from 'classnames';
 
 import { AutoSizer, Table, Column, SortDirection } from 'react-virtualized';
@@ -7,6 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
+
 import { withStyles } from '@material-ui/core/styles';
 
 import { EDIT_ITEM, FOCUS_ITEM } from './actions';

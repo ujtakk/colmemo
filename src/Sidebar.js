@@ -49,16 +49,13 @@ const styles = theme => ({
   },
   formControl: {
     marginTop: theme.spacing.unit * 2,
-    minWidth: 120,
   },
   drawerPaper: {
     width: sideBarWidth,
   },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3,
+  dialog: {
   },
-  toolbar: theme.mixins.toolbar
+  toolbar: theme.mixins.toolbar,
 });
 
 class Sidebar extends React.Component {
@@ -90,91 +87,102 @@ class Sidebar extends React.Component {
     }
   };
 
-  AddDialog = () => (
-    <div>
-      <DialogTitle>
-        Add new item
-      </DialogTitle>
-      <DialogContent>
-        <form className={this.props.classes.form} noValidate>
-          <TextField
-            id="name"
-            label="Item Name"
-            margin="normal"
-            onChange={e => this.setState({newItem: e.target.value})}
-          />
-        </form>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={this.closePop()} color="primary">
-          Cancel
-        </Button>
-        <Button
-          onClick={this.closePop({
-            type: type.ADD_ITEM,
-            value: this.state.newItem
-          })}
-          color="secondary"
-        >
-          OK
-        </Button>
-      </DialogActions>
-    </div>
-  );
-
-  EditDialog = () => (
-    <div>
-      <DialogTitle>
-        Edit attributes
-      </DialogTitle>
-      <DialogContent>
-        <Typography gutterBottom>
-          Add new column for each items
-        </Typography>
-        <form className={this.props.classes.form} noValidate>
-          <TextField
-            label="Attribute Name"
-            margin="normal"
-            onChange={e => this.setState({
-              attrKey: uuidv4(),
-              attrLabel: e.target.value,
+  AddDialog = (key, index) => {
+    const { dialog, form } = this.props.classes;
+    return (
+      <Dialog className={dialog} key={key} open={this.state.pop[index]}>
+        <DialogTitle>
+          Add new item
+        </DialogTitle>
+        <DialogContent>
+          <Typography>
+            Enter the item name
+          </Typography>
+          <form className={form} noValidate>
+            <TextField
+              id="name"
+              label="Item Name"
+              margin="normal"
+              onChange={e => this.setState({newItem: e.target.value})}
+            />
+          </form>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.closePop()} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={this.closePop({
+              type: type.ADD_ITEM,
+              value: this.state.newItem
             })}
-          />
-          <FormControl className={this.props.classes.formControl}>
-            <InputLabel htmlFor="attr-type">Attribute Type</InputLabel>
-            <Select
-              value={this.state.attrType}
-              onChange={e => {this.setState({attrType: e.target.value})}}
-            >
-              <MenuItem value="string">string</MenuItem>
-              <MenuItem value="int">int</MenuItem>
-              <MenuItem value="float">float</MenuItem>
-              <MenuItem value="bool">bool</MenuItem>
-            </Select>
-          </FormControl>
-        </form>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={this.closePop()} color="primary">
-          Cancel
-        </Button>
-        <Button
-          onClick={this.closePop({
-            type: type.ADD_ATTR,
-            value: {
-              key: this.state.attrKey,
-              type: this.state.attrType,
-              label: this.state.attrLabel,
-              width: (this.state.attrType === 'string' ? 200 : 100),
-            },
-          })}
-          color="secondary"
-        >
-          OK
-        </Button>
-      </DialogActions>
-    </div>
-  );
+            color="secondary"
+          >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
+
+  EditDialog = (key, index) => {
+    const { dialog, form, formControl } = this.props.classes;
+    return (
+      <Dialog className={dialog} key={key} open={this.state.pop[index]}>
+        <DialogTitle>
+          Edit attributes
+        </DialogTitle>
+        <DialogContent>
+          <Typography>
+            Add new column for each items
+          </Typography>
+          <form className={form} noValidate>
+            <TextField
+              label="Attribute Name"
+              margin="normal"
+              onChange={e => this.setState({
+                attrKey: uuidv4(),
+                attrLabel: e.target.value,
+              })}
+            />
+            <FormControl className={formControl}>
+              <InputLabel htmlFor="attr-type">
+                Attribute Type
+              </InputLabel>
+              <Select
+                value={this.state.attrType}
+                onChange={e => {this.setState({attrType: e.target.value})}}
+              >
+                <MenuItem value="string">string</MenuItem>
+                <MenuItem value="int">int</MenuItem>
+                <MenuItem value="float">float</MenuItem>
+                <MenuItem value="bool">bool</MenuItem>
+              </Select>
+            </FormControl>
+          </form>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.closePop()} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={this.closePop({
+              type: type.ADD_ATTR,
+              value: {
+                key: this.state.attrKey,
+                type: this.state.attrType,
+                label: this.state.attrLabel,
+                width: (this.state.attrType === 'string' ? 200 : 100),
+              },
+            })}
+            color="secondary"
+          >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
 
   storeReader = () => {
     const reader = new FileReader();
@@ -191,27 +199,33 @@ class Sidebar extends React.Component {
     reader.readAsText(this.state.fileObj);
   };
 
-  ImportDialog = () => (
-    <div>
-      <DialogTitle>
-        Import whole tables
-      </DialogTitle>
-      <DialogContent>
-        <Input
-          type="file"
-          onChange={e => this.setState({fileObj: e.target.files[0]})}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={this.closePop()} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={this.storeReader} color="secondary">
-          OK
-        </Button>
-      </DialogActions>
-    </div>
-  );
+  ImportDialog = (key, index) => {
+    const { dialog } = this.props.classes;
+    return (
+      <Dialog className={dialog} key={key} open={this.state.pop[index]}>
+        <DialogTitle>
+          Import the table
+        </DialogTitle>
+        <DialogContent>
+          <Typography>
+            Select the source file
+          </Typography>
+          <Input
+            type="file"
+            onChange={e => this.setState({fileObj: e.target.files[0]})}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.closePop()} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={this.storeReader} color="secondary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
 
   storeWriter = () => {
     const content = JSON.stringify(Object.assign({}, localStorage));
@@ -222,24 +236,30 @@ class Sidebar extends React.Component {
     this.closePop()();
   };
 
-  ExportDialog = () => (
-    <div>
-      <DialogTitle>
-        Export whole entries (dump localStorage from redux-persist)
-      </DialogTitle>
-      <DialogContent>
-        Would you download the edited table?
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={this.closePop()} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={this.storeWriter} color="secondary">
-          OK
-        </Button>
-      </DialogActions>
-    </div>
-  );
+  ExportDialog = (key, index) => {
+    const { dialog } = this.props.classes;
+    return (
+      <Dialog className={dialog} key={key} open={this.state.pop[index]}>
+        <DialogTitle>
+          Export the table
+        </DialogTitle>
+        <DialogContent>
+          <Typography>
+            Would you download the table?
+            (dump localStorage from redux-persist)
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.closePop()} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={this.storeWriter} color="secondary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
 
   operations = [
     {key: 'Add',    icon: <AddIcon />,    dialog: this.AddDialog   },
@@ -262,23 +282,16 @@ class Sidebar extends React.Component {
           <div className={classes.toolbar} />
           <List>
             {this.operations.map(
-              (props, index) => (
-                <ListItem key={props.key} button onClick={this.openPop(index)}
-                >
-                  <ListItemIcon>{props.icon}</ListItemIcon>
-                  <ListItemText primary={props.key} />
+              (op, index) => (
+                <ListItem key={op.key} button onClick={this.openPop(index)}>
+                  <ListItemIcon>{op.icon}</ListItemIcon>
+                  <ListItemText primary={op.key} />
                 </ListItem>
               )
             )}
           </List>
         </Drawer>
-        {this.operations.map(
-          (props, index) => (
-            <Dialog key={props.key} open={this.state.pop[index]}>
-              {props.dialog()}
-            </Dialog>
-          )
-        )}
+        {this.operations.map((op, index) => op.dialog(op.key, index))}
       </div>
     );
   }
