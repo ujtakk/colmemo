@@ -238,10 +238,10 @@ class ItemTable extends React.PureComponent {
     const { classes } = this.props;
 
     return (
-      <Paper className={classes.container} style={{ overflow: 'hidden' }}>
+      <Paper className={classes.container}>
         <div className={classes.toolbar} />
-        <AutoSizer position="fixed">
-          {({ height, width }) => this.TableBody(height, width)}
+        <AutoSizer>
+          {({ height, width }) => this.TableBody(height-64, width)}
         </AutoSizer>
       </Paper>
     );

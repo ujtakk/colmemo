@@ -253,33 +253,33 @@ class Sidebar extends React.Component {
 
     return (
       <div>
-      <Drawer
-        className={classes.drawer}
-        variant="temporary"
-        classes={{ paper: classes.drawerPaper }}
-        open={showing}
-      >
-        <div className={classes.toolbar} />
-        <List>
-          {this.operations.map(
-            (props, index) => (
-              <ListItem key={props.key} button onClick={this.openPop(index)}
-              >
-                <ListItemIcon>{props.icon}</ListItemIcon>
-                <ListItemText primary={props.key} />
-              </ListItem>
-            )
-          )}
-        </List>
-      </Drawer>
-      {this.operations.map(
-        (props, index) => (
-          <Dialog key={props.key} open={this.state.pop[index]}>
-            {props.dialog()}
-          </Dialog>
-        )
-      )}
-    </div>
+        <Drawer
+          className={classes.drawer}
+          variant="temporary"
+          classes={{ paper: classes.drawerPaper }}
+          open={showing}
+        >
+          <div className={classes.toolbar} />
+          <List>
+            {this.operations.map(
+              (props, index) => (
+                <ListItem key={props.key} button onClick={this.openPop(index)}
+                >
+                  <ListItemIcon>{props.icon}</ListItemIcon>
+                  <ListItemText primary={props.key} />
+                </ListItem>
+              )
+            )}
+          </List>
+        </Drawer>
+        {this.operations.map(
+          (props, index) => (
+            <Dialog key={props.key} open={this.state.pop[index]}>
+              {props.dialog()}
+            </Dialog>
+          )
+        )}
+      </div>
     );
   }
 }
