@@ -185,6 +185,7 @@ class ItemTable extends React.PureComponent {
           dispatch({type: FOCUS_ITEM, value: event.rowData.title})
         }
         onRowDoubleClick={({ event, index, rowData }) => {
+          // TODO: make columns editable
           console.log(this.state.focusedAttr, rowData, index, event);
         }}
         onColumnClick={({ columnData, dataKey, event }) => {
