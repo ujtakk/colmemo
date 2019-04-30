@@ -39,7 +39,7 @@ function rootReducer(state=initialState, action) {
     case type.EDIT_ITEM:
       const newItems = state.items;
       newItems[action.index][action.attr] = action.value;
-      return Object.assign({}, state, {items: newItems});
+      return Object.assign({}, state, {items: [...newItems]});
     case type.FOCUS_ITEM:
       return Object.assign({}, state, {
         focusedItem: action.value,
