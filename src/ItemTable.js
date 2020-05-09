@@ -14,6 +14,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { EDIT_ITEM, FOCUS_ITEM } from './actions';
 
 const itemTableWidth = '75%';
+const sideBarWidth = '15%';
 
 const styles = theme => ({
   container: {
@@ -21,6 +22,21 @@ const styles = theme => ({
     flex: '1 1 auto',
     height: '100vh',
     width: itemTableWidth,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  containerShift: {
+    overflowY: 'scroll',
+    flex: '1 1 auto',
+    height: '100vh',
+    width: `calc(${itemTableWidth}-${sideBarWidth})`,
+    marginLeft: '15%',
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   },
   table: {
     square: true,
@@ -237,10 +253,12 @@ class ItemTable extends React.PureComponent {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, showing } = this.props;
 
     return (
-      <Paper className={classes.container}>
+      <Paper className={classNames(classes.container, {
+        [classes.containerShift]: showing
+      })}>
         <div className={classes.toolbar} />
         <AutoSizer>
           {({ height, width }) => this.TableBody(height-64, width)}

@@ -48,7 +48,7 @@ const styles = theme => ({
     width: 'fit-content',
   },
   formControl: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
   },
   drawerPaper: {
     width: sideBarWidth,
@@ -275,7 +275,7 @@ class Sidebar extends React.Component {
       <div>
         <Drawer
           className={classes.drawer}
-          variant="temporary"
+          variant="persistent"
           classes={{ paper: classes.drawerPaper }}
           open={showing}
         >

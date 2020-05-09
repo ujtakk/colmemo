@@ -18,7 +18,7 @@ const styles = theme => ({
     width: noteAreaWidth,
   },
   content: {
-    padding: theme.spacing.unit * 1,
+    padding: theme.spacing(1),
     flexGrow: 1,
     overflow: 'scroll',
     overflowX: 'hidden',
@@ -29,7 +29,7 @@ const styles = theme => ({
   },
   toolbar: theme.mixins.toolbar,
   thumbnail: {
-    padding: theme.spacing.unit,
+    padding: theme.spacing(1),
   }
 });
 

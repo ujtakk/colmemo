@@ -36,7 +36,8 @@ function App(props) {
       />
       <Grid container>
         <Sidebar dispatch={dispatch} showing={openSidebar} />
-        <ItemTable dispatch={dispatch} cols={attrs} rows={items} />
+        <ItemTable dispatch={dispatch}
+          showing={openSidebar} cols={attrs} rows={items} />
         <NoteArea dispatch={dispatch} text={noteText} />
       </Grid>
     </MuiThemeProvider>
